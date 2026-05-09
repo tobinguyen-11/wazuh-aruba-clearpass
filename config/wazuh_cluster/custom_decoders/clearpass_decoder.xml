@@ -1,0 +1,39 @@
+<decoder name="aruba-cppm">
+  <prematch>YOUR_LOG_PREFIX|Auth\.Auth-Status=</prematch>
+</decoder>
+
+<decoder name="aruba-cppm-fields">
+  <parent>aruba-cppm</parent>
+  <regex type="pcre2">Username=([^,]+)</regex>
+  <order>user</order>
+</decoder>
+
+<decoder name="aruba-cppm-fields">
+  <parent>aruba-cppm</parent>
+  <regex type="pcre2">MAC-Address=([^,]+)|Host-MAC-Address=([^,]+)</regex>
+  <order>srcmac</order>
+</decoder>
+
+<decoder name="aruba-cppm-fields">
+  <parent>aruba-cppm</parent>
+  <regex type="pcre2">SSID=([^,]+)</regex>
+  <order>ssid</order>
+</decoder>
+
+<decoder name="aruba-cppm-fields">
+  <parent>aruba-cppm</parent>
+  <regex type="pcre2">AP-Name=([^,]+)</regex>
+  <order>ap_name</order>
+</decoder>
+
+<decoder name="aruba-cppm-fields">
+  <parent>aruba-cppm</parent>
+  <regex type="pcre2">Auth-Status=([^,]+)</regex>
+  <order>status</order>
+</decoder>
+
+<decoder name="aruba-cppm-fields">
+  <parent>aruba-cppm</parent>
+  <regex type="pcre2">Error-Code=(\d+)</regex>
+  <order>error_code</order>
+</decoder>

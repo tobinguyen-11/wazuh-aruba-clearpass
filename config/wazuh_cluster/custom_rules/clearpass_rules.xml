@@ -1,0 +1,32 @@
+<group name="aruba,clearpass,">
+  <rule id="100500" level="3">
+    <decoded_as>aruba-cppm</decoded_as>
+    <description>ClearPass: Activity detected</description>
+  </rule>
+
+  <rule id="100501" level="3">
+    <if_sid>100500</if_sid>
+    <match>Auth.Auth-Status=Accept</match>
+    <description>ClearPass: Authentication Successful</description>
+  </rule>
+
+  <rule id="100502" level="7">
+    <if_sid>100500</if_sid>
+    <match>Auth.Auth-Status=Failed|Auth.Auth-Status=Reject</match>
+    <description>ClearPass: Authentication Failed</description>
+  </rule>
+
+  <rule id="100503" level="7">
+    <if_sid>100500</if_sid>
+    <field name="error_code" negate="yes">^0$</field>
+    <description>ClearPass: User $(user) FAILED to login (Error Code: $(error_code)) on AP $(ap_name) (SSID: $(ssid))</description>
+    <group>authentication_failed,</group>
+  </rule>
+
+  <rule id="100504" level="3">
+    <if_sid>100500</if_sid>
+    <field name="error_code">^0$</field>
+    <description>ClearPass: User $(user) successfully logged in on AP $(ap_name) (SSID: $(ssid))</description>
+    <group>authentication_success,</group>
+  </rule>
+</group>

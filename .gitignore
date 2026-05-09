@@ -1,0 +1,20 @@
+# Docker volumes
+wazuh_logs/
+wazuh-indexer-data/
+wazuh_etc/
+wazuh_queue/
+filebeat_var/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Secrets (if any)
+.env
+*.key
+*.pem

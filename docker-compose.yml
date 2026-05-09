@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  wazuh.manager:
+    image: wazuh/wazuh-manager:4.14.5
+    hostname: wazuh.manager
+    restart: always
+    ports:
+      - "1514:1514"
+      - "1515:1515"
+      - "514:514/udp"
+      - "55000:55000"
+    environment:
+      - INDEXER_URL="https://wazuh.indexer:9200"
+      - INDEXER_USERNAME=admin
+      - INDEXER_PASSWORD=SecretPassword123
+      - FILEBEAT_SSL_VERIFICATION_MODE=full
+      - SSL_CERTIFICATE_AUTHORITIES=/etc/ssl/root-ca.pem
+      - SSL_CERTIFICATE=/etc/ssl/filebeat.pem
+      - SSL_KEY=/etc/ssl/filebeat.key
+      - API_USERNAME=wazuh-api-user
+      - API_PASSWORD=SecretPassword123
+    volumes:
+      - wazuh_api_configuration:/var/ossec/api/configuration
+      - wazuh_etc:/var/ossec/etc
+      - wazuh_logs:/var/ossec/logs
+      - wazuh_queue:/var/ossec/queue
+      - ./config/wazuh_cluster/ossec.conf:/var/ossec/etc/ossec.conf
+      - ./config/wazuh_cluster/custom_decoders:/var/ossec/etc/decoders
+      - ./config/wazuh_cluster/custom_rules:/var/ossec/etc/rules
+
+  wazuh.indexer:
+    image: wazuh/wazuh-indexer:4.14.5
+    hostname: wazuh.indexer
+    restart: always
+    environment:
+      - "OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g"
+    volumes:
+      - wazuh-indexer-data:/var/lib/wazuh-indexer
+
+  wazuh.dashboard:
+    image: wazuh/wazuh-dashboard:4.14.5
+    hostname: wazuh.dashboard
+    restart: always
+    ports:
+      - 443:5601
+    environment:
+      - INDEXER_USERNAME=admin
+      - INDEXER_PASSWORD=SecretPassword123
+      - WAZUH_API_URL=https://wazuh.manager
+    depends_on:
+      - wazuh.indexer
+
+volumes:
+  wazuh_api_configuration:
+  wazuh_etc:
+  wazuh_logs:
+  wazuh_queue:
+  wazuh-indexer-data:
