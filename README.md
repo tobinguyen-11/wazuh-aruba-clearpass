@@ -89,8 +89,8 @@ sequenceDiagram
 
 ### Bước 1: Tải mã nguồn
 ```bash
-git clone <url-repository-cua-ban>
-cd wazuh-clearpass-template
+git clone https://github.com/tobinguyen-11/wazuh-aruba-clearpass.git
+cd wazuh-aruba-clearpass
 ```
 
 ### Bước 2: Tùy chỉnh nhận diện
